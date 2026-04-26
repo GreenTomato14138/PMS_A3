@@ -1,0 +1,109 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>📦 Inventory List</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="openAddModal()">
+        <ion-icon name="add-circle-outline"></ion-icon>
+      </ion-button>
+      <ion-button (click)="showHelp()">
+        <ion-icon name="help-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card class="search-card">
+    <ion-card-content>
+      <div class="search-container">
+        <ion-input
+          class="search-input"
+          label="🔍 Search by name"
+          labelPlacement="floating"
+          [(ngModel)]="searchName"
+          placeholder="Enter item name"
+          clearInput
+        ></ion-input>
+        <ion-button (click)="searchItem()" fill="solid" shape="round" class="search-btn">
+          <ion-icon name="search-outline" slot="start"></ion-icon>
+          Search
+        </ion-button>
+      </div>
+      <ion-item lines="none" class="sort-item">
+        <ion-label>Sort by</ion-label>
+        <ion-select [(ngModel)]="sortBy" (ionChange)="applySort()" interface="popover">
+          <ion-select-option value="name">Name (A-Z)</ion-select-option>
+          <ion-select-option value="priceLowHigh">Price (Low to High)</ion-select-option>
+          <ion-select-option value="priceHighLow">Price (High to Low)</ion-select-option>
+          <ion-select-option value="quantity">Quantity (Low to High)</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  @if (filteredItems.length === 0) {
+    <ion-card class="empty-card">
+      <ion-card-content class="ion-text-center">
+        <ion-icon name="folder-open-outline" size="large" color="medium"></ion-icon>
+        <p>No items found. Try a different name or add new items.</p>
+      </ion-card-content>
+    </ion-card>
+  } @else {
+    <div class="items-grid">
+      @for (item of filteredItems; track item.item_id) {
+        <ion-card class="item-card">
+          <ion-card-header>
+            <ion-card-title>
+              <ion-icon [name]="getCategoryIcon(item.category)" class="category-icon"></ion-icon>
+              {{ item.item_name }}
+            </ion-card-title>
+            <div class="badge-group">
+              <ion-badge [color]="getStatusColor(item.stock_status)" class="status-badge">
+                {{ item.stock_status }}
+              </ion-badge>
+              <ion-badge color="warning" *ngIf="item.featured_item === 1" class="featured-badge">
+                ⭐ Featured
+              </ion-badge>
+            </div>
+          </ion-card-header>
+
+          <ion-card-content>
+            <ion-grid class="info-grid">
+              <ion-row>
+                <ion-col size="6">
+                  <div class="info-label">📂 Category</div>
+                  <div class="info-value">{{ item.category }}</div>
+                </ion-col>
+                <ion-col size="6">
+                  <div class="info-label">🔢 Quantity</div>
+                  <div class="info-value">{{ item.quantity }}</div>
+                </ion-col>
+                <ion-col size="6">
+                  <div class="info-label">💰 Price</div>
+                  <div class="info-value">${{ item.price }}</div>
+                </ion-col>
+                <ion-col size="6">
+                  <div class="info-label">🏭 Supplier</div>
+                  <div class="info-value">{{ item.supplier_name }}</div>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+
+            <div class="quantity-bar-container">
+              <div class="quantity-bar-label">Stock Level: {{ item.quantity }} / 200</div>
+              <div class="quantity-bar">
+                <div class="quantity-fill" [style.width.%]="getQuantityPercent(item.quantity)"
+                     [style.background-color]="getProgressColor(item.quantity)"></div>
+              </div>
+            </div>
+
+            <div *ngIf="item.special_note" class="note-section">
+              <ion-icon name="chatbubble-outline" class="note-icon"></ion-icon>
+              <span class="note-text">{{ item.special_note }}</span>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      }
+    </div>
+  }
+</ion-content>

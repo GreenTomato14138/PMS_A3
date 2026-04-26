@@ -1,0 +1,76 @@
+// privacy-security.page.scss
+:host {
+  --magic-1: #00ff87;
+  --magic-2: #60efff;
+  --magic-3: #ffd700;
+}
+
+ion-content {
+  --background: conic-gradient(from 90deg at 50% 0%, #0b3b2a, #1b5e3f, #0b3b2a);
+  position: relative;
+
+  &::after {
+    content: '✨🌿✨';
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    font-size: 60px;
+    opacity: 0.15;
+    animation: spark 4s infinite;
+    pointer-events: none;
+  }
+}
+
+@keyframes spark {
+  0% { opacity: 0.1; transform: rotate(0deg); }
+  50% { opacity: 0.3; transform: rotate(5deg); }
+  100% { opacity: 0.1; transform: rotate(0deg); }
+}
+
+ion-header ion-toolbar {
+  --background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(12px);
+  --color: #d4ff00;
+  border-bottom: 1px solid #00ff87;
+}
+
+ion-card {
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(20px);
+  border-radius: 60px 20px 60px 20px;
+  border: 1px solid rgba(0,255,135,0.6);
+  transition: 0.3s;
+  position: relative;
+  overflow: hidden;
+
+  &:hover {
+    backdrop-filter: blur(0px);
+    background: rgba(0,0,0,0.6);
+    border-radius: 20px 60px 20px 60px;
+    transform: rotate(0.5deg) scale(1.01);
+    box-shadow: 0 20px 40px rgba(0,255,135,0.3);
+  }
+
+  &::before {
+    content: '🍃';
+    position: absolute;
+    bottom: -20px;
+    right: -20px;
+    font-size: 120px;
+    opacity: 0.2;
+    animation: leafSpin 8s infinite linear;
+  }
+}
+
+@keyframes leafSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+ion-card-content h3 {
+  background: linear-gradient(90deg, #00ff87, #60efff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 800;
+}

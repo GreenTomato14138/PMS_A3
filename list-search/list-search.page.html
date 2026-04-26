@@ -1,0 +1,86 @@
+<!-- app/pages/list-search/list-search.page.html -->
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Inventory List</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="showHelp()">
+        <ion-icon slot="icon-only" name="help-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- Search Section -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Search Single Item</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="stacked">Item Name</ion-label>
+        <ion-input [(ngModel)]="searchName" placeholder="Enter exact name"></ion-input>
+      </ion-item>
+      <ion-button expand="block" (click)="searchItem()" [disabled]="!searchName.trim()">
+        <ion-icon name="search-outline" slot="start"></ion-icon>
+        Search
+      </ion-button>
+      <ion-button expand="block" fill="outline" (click)="clearSearch()">
+        Show All Items
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- All Items List -->
+  <ion-list *ngIf="!isSearching">
+    <ion-list-header>
+      <ion-label>All Inventory Items</ion-label>
+    </ion-list-header>
+    <ion-item *ngFor="let item of allItems">
+      <ion-label>
+        <h2>{{ item.item_name }}</h2>
+        <p>Category: {{ item.category }} | Quantity: {{ item.quantity }} | Price: ${{ item.price }}</p>
+        <p>Supplier: {{ item.supplier_name }} | Status: {{ item.stock_status }}</p>
+        <p *ngIf="item.featured_item === 1">⭐ Featured Item</p>
+      </ion-label>
+    </ion-item>
+    <ion-item *ngIf="allItems.length === 0">
+      <ion-label class="ion-text-center">No items found</ion-label>
+    </ion-item>
+  </ion-list>
+
+  <!-- Single Search Result -->
+  <ion-card *ngIf="isSearching && singleResult">
+    <ion-card-header>
+      <ion-card-title>Search Result</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item><ion-label><strong>Name:</strong> {{ singleResult.item_name }}</ion-label></ion-item>
+        <ion-item><ion-label><strong>Category:</strong> {{ singleResult.category }}</ion-label></ion-item>
+        <ion-item><ion-label><strong>Quantity:</strong> {{ singleResult.quantity }}</ion-label></ion-item>
+        <ion-item><ion-label><strong>Price:</strong> ${{ singleResult.price }}</ion-label></ion-item>
+        <ion-item><ion-label><strong>Supplier:</strong> {{ singleResult.supplier_name }}</ion-label></ion-item>
+        <ion-item><ion-label><strong>Stock Status:</strong> {{ singleResult.stock_status }}</ion-label></ion-item>
+        <ion-item *ngIf="singleResult.featured_item === 1"><ion-label>⭐ Featured Item</ion-label></ion-item>
+        <ion-item *ngIf="singleResult.special_note"><ion-label><strong>Special Note:</strong> {{ singleResult.special_note }}</ion-label></ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+  <!-- 在 Search Result 卡片之后，添加以下代码 -->
+<ion-card *ngIf="debugInfo">
+  <ion-card-header>
+    <ion-card-title>⚠️ Debug Info</ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    <pre style="white-space: pre-wrap;">{{ debugInfo }}</pre>
+    <p>上述为服务器返回的原始数据。请检查字段名是否匹配前端模型 (item_name, category, ...)。</p>
+  </ion-card-content>
+</ion-card>
+
+  <ion-card *ngIf="isSearching && !singleResult && searchAttempted">
+    <ion-card-content class="ion-text-center">
+      <p>Item "{{ searchName }}" not found</p>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

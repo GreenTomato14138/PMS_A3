@@ -1,0 +1,41 @@
+<!-- app/pages/privacy-security/privacy-security.page.html -->
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Privacy & Security</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="showHelp()">
+        <ion-icon slot="icon-only" name="help-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Mobile App Privacy & Security Requirements</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <h3>Data Protection</h3>
+      <p>All communication between the app and the remote REST API uses HTTPS, ensuring encrypted data transmission. No sensitive personal information is stored locally on the device.</p>
+
+      <h3>Authentication & Authorization</h3>
+      <p>The current version does not require user login. However, future iterations should implement role-based access control to prevent unauthorized modifications.</p>
+
+      <h3>Input Validation</h3>
+      <p>All input fields are validated on the client side (type checking, required fields, numeric ranges) to prevent malformed data submission. Server-side validation is also enforced by the API.</p>
+
+      <h3>API Security</h3>
+      <p>The REST API uses standard HTTP methods. Delete operations are restricted for certain items (e.g., "Laptop") to maintain at least one record in the database.</p>
+
+      <h3>Data Integrity</h3>
+      <p>Inventory item names are unique identifiers. The system prevents duplicate entries and enforces data types consistent with the database schema.</p>
+
+      <h3>User Privacy</h3>
+      <p>No personal data is collected from users. Supplier names and item details are only used for inventory management purposes and are not shared with third parties.</p>
+
+      <h3>Secure Development Practices</h3>
+      <p>The application is built with Ionic and Angular, following security best practices including proper error handling, avoiding inline scripts, and using Angular's built-in sanitization for data binding.</p>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
